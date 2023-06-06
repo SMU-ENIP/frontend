@@ -59,7 +59,6 @@ const ReceiptView = (props) => {
     fetchData();
   },[props.onSelectedDay]);
   
-  
   //openModal의 상태 정의
   function openModal(item) {
     setSelectedId(item);
@@ -77,23 +76,15 @@ const ReceiptView = (props) => {
     return(
       <TouchableOpacity
         onPress={ onPress }
-        style={[styles.item, { backgroundColor }]}
+        style={[receiptStyle.item, { backgroundColor }]}
       >
-      <View
-        style = {{
-          flexDirection: 'row'
-        }}
-      >
-        <Text style={[receiptStyle.receiptTitle, { color: textColor }]}> {item.receiptList} </Text>
-        <Text style={[receiptStyle.receiptText, { color: textColor }]}> {item.date} </Text>
-      </View>
-      <View
-        style = {{
-          flexDirection: 'row'
-        }}
-      >
-        <Text style={[receiptStyle.receiptText, { color: textColor }]}> {item.trashAmount} </Text>
-        <Text style={[receiptStyle.receiptText, { color: textColor }]}>  {item.expenditureCost} </Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text style={[receiptStyle.receiptTitle, { color: textColor }]}>NO. {item.receiptList}</Text>
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={[receiptStyle.receiptText, { color: textColor }]}> {item.date} </Text>
+          <Text style={[receiptStyle.receiptText, { color: textColor }]}> {item.trashAmount} </Text>
+          <Text style={[receiptStyle.receiptText, { color: textColor }]}> {item.expenditureCost} </Text>
+        </View>
       </View>
     </TouchableOpacity>
     );
@@ -118,7 +109,7 @@ const ReceiptView = (props) => {
   };
 
   return (
-    <View style={styles.marginView}>
+    <View style={receiptStyle.marginView}>
         <SafeAreaView>
           <FlatList
             style={receiptStyle.receiptFlatListView}
@@ -128,21 +119,20 @@ const ReceiptView = (props) => {
             extraData={selectedId}
           />
         </SafeAreaView>
-
         <Modal
           visible={modalVisible}
           transparent={true}
           onRequestClose={closeModal}
         >
-          <View style={styles.modalContainer}>
+          <View style={receiptStyle.modalContainer}>
             {selectedId && (
               <TouchableOpacity
-                style={styles.modalContent}
+                style={receiptStyle.modalContent}
                 onPress={closeModal}
               >
                 <Image
                   source={{ uri: selectedItemImage }} // 'imageUri'를 실제 데이터 객체에서 이미지 URI 속성으로 대체하세요.
-                  style={styles.modalImage}
+                  style={receiptStyle.modalImage}
                 />
               </TouchableOpacity>
             )}
@@ -151,39 +141,5 @@ const ReceiptView = (props) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  marginView: {
-    width: "100%",
-    marginTop: 5,
-    marginBottom: 10,
-  },
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    borderRadius: 10,
-    alignItems: "center",
-  },
-  modalImage: {
-    width: 300,
-    height: 500,
-    resizeMode: "contain",
-  },
-});
 
 export default ReceiptView;
