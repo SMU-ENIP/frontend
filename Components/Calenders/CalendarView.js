@@ -1,55 +1,14 @@
-import { View, Text } from "react-native";
 import React, { useState } from "react";
+import { View, Text } from "react-native";
 import { Calendar, LocaleConfig } from "react-native-calendars";
-
 import { calendarStyle } from "../styles";
-import ReceiptView, {} from "./ReceiptView";
+import ReceiptView from "./ReceiptView";
 
 LocaleConfig.locales["kr"] = {
-  monthNames: [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월 ",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ],
-  monthNames: [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월 ",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ],
-  monthNamesShort: [
-    "1월",
-    "2월",
-    "3월",
-    "4월",
-    "5월",
-    "6월",
-    "7월",
-    "8월 ",
-    "9월",
-    "10월",
-    "11월",
-    "12월",
-  ],
+  monthNames: Array.from({ length: 12 }, (_, i) => `${i + 1}월`),
+  monthNamesShort: Array.from({ length: 12 }, (_, i) => `${i + 1}`),
   dayNames: [
-    "일요알",
+    "일요일",
     "월요일",
     "화요일",
     "수요일",
@@ -66,15 +25,17 @@ LocaleConfig.defaultLocale = "kr";
 const CalendarView = () => {
   const [selected, setSelected] = useState("");
 
+  const handleDayPress = (day) => {
+    setSelected(day.dateString);
+  };
+
   return (
     <View>
       <View style={calendarStyle.calendarView}>
         <Calendar
           style={calendarStyle.calendar}
           monthFormat={"yyyy년 MM월"}
-          onDayPress={(day) => {
-            setSelected(day.dateString);
-          }}
+          onDayPress={handleDayPress}
           markedDates={{
             [selected]: {
               selected: true,
@@ -91,26 +52,21 @@ const CalendarView = () => {
                 color: "blue",
               },
             },
-            textSectionTitleDisabledColor: "pink",
             selectedDayBackgroundColor: "#009966",
             todayTextColor: "#009966",
             arrowColor: "#009966",
             dotColor: "#009966",
           }}
-        ></Calendar>
+        />
       </View>
 
-      <View style = {calendarStyle.todayTextView}>
-        <Text style = {calendarStyle.todaytextStyle}>
-          Select Day : {selected}
+      <View style={calendarStyle.todayTextView}>
+        <Text style={calendarStyle.todaytextStyle}>
+          Select Day: {selected}
         </Text>
       </View>
 
-      <View>
-        <ReceiptView 
-          onSelectedDay = {selected}
-        ></ReceiptView>
-      </View>
+      <ReceiptView onSelectedDay={selected} />
     </View>
   );
 };
