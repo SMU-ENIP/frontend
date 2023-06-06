@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AccountBookScreen from './Screens/AccountBookScreen';
-import HomeScreen from './Screens/HomeScreen';
-import MyPageScreen from './Screens/MyPageScreen';
-import QuestScreen from './Screens/QuestScreen';
+import AccountBookScreen from '../Screens/AccountBookScreen';
+import HomeScreen from '../Screens/HomeScreen';
+import MyPageScreen from '../Screens/MyPageScreen';
+import QuestScreen from '../Screens/QuestScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
