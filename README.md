@@ -1,6 +1,6 @@
 # SMU-ENIP frontend
 
-# Upload v1.0
+# Upload v0.1
 
 ## + 기능 구성
 ### 1. BottomTabNavigator을 이용한 자유로운 화면 이동
