@@ -1,5 +1,4 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from '../Components/RecieptUpload/Home';
 import Upload from '../Components/RecieptUpload/Upload';

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, ScrollView } from 'react-native';
+import { RankingStyle } from '../styles';
 import Axios from 'axios';
 
-const Raking = () => {
+const Ranking = () => {
   const [data, setData] = useState([]); //데이터 상태 관리
   const [rankType, setRankType] = useState('score'); //랭킹 종류 관리
 
@@ -37,14 +38,14 @@ const Raking = () => {
 
   const renderRankingButton = () => {
     return (
-      <View style={styles.buttonContainer}>
+      <View style={RankingStyle.buttonContainer}>
         <TouchableOpacity
-          style={styles.button}
+          style={RankingStyle.button}
           onPress={handleRankingToggle}
         >
-          <Text style={styles.buttonText}>
-            {`랭킹 (${rankType === 'score' ? '점수' : '무게'})`}
-          </Text>
+          <Text style={RankingStyle.buttonText}> 
+            {`랭킹 (${rankType === 'score' ? '점수' : '무게'})`} 
+          </Text> 
         </TouchableOpacity>
       </View>
     );
@@ -53,24 +54,22 @@ const Raking = () => {
   return (
     <ScrollView style={{ flex: 1 }}>
       <View>
-        <View style={styles.tableContainer}>
-          <View style={styles.tableHeader}>
-            <Text style={styles.columnHeader}>순위</Text>
-            <Text style={styles.columnHeader}>이름</Text>
-            <Text style={styles.columnHeader}>무게</Text>
-            <Text style={styles.columnHeader}>점수</Text>
+        <View style={RankingStyle.tableContainer}>
+          <View style={RankingStyle.tableHeader}>
+            <Text style={RankingStyle.columnHeader}>순위</Text>
+            <Text style={RankingStyle.columnHeader}>이름</Text>
+            <Text style={RankingStyle.columnHeader}>무게</Text>
+            <Text style={RankingStyle.columnHeader}>점수</Text>
           </View>
 
           {data.map((item, index) => (
-  <View style={[styles.tableRow, { backgroundColor: styles.rowColors[index % styles.rowColors.length] }]} key={index}>
-    <Text style={styles.column}>{index + 1}</Text>
-    <Text style={styles.column}>{item.nickName}</Text>
-    <Text style={styles.column}>{item.weight}</Text>
-    <Text style={styles.column}>{item.score}</Text>
-  </View>
-))}
-
-
+            <View style={[RankingStyle.tableRow, { backgroundColor: RankingStyle.rowColors[index % RankingStyle.rowColors.length] }]} key={index}>
+              <Text style={RankingStyle.column}>{index + 1}</Text>
+              <Text style={RankingStyle.column}>{item.nickName}</Text>
+              <Text style={RankingStyle.column}>{item.weight}</Text>
+              <Text style={RankingStyle.column}>{item.score}</Text>
+            </View>
+          ))}
         </View>
         {renderRankingButton()}
       </View>
@@ -78,53 +77,4 @@ const Raking = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  buttonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 10,
-    marginTop: 10, 
-  },
-  button: {
-    backgroundColor: 'green',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  tableContainer: {
-    backgroundColor: '#c8e6c9',
-    borderRadius: 5,
-    overflow: 'hidden',
-    marginHorizontal: 15,
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#81c784', 
-    paddingVertical: 10,
-  },
-  columnHeader: {
-    flex: 1,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    color: 'white', 
-    fontSize: 18,
-  },
-  tableRow: {
-    flexDirection: 'row',
-    paddingVertical: 10,
-  },
-  column: {
-    flex: 1,
-    textAlign: 'center',
-    color: 'black',
-    paddingVertical: 5,
-  },
-  rowColors: ['#f0f8f6', '#e0f2e9'], 
-});
-
-export default Raking;
+export default Ranking;

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 import {
   responsiveScreenWidth,
   responsiveScreenHeight,
@@ -65,15 +65,48 @@ export const calendarStyle = {
 
 export const receiptStyle = {
   receiptTitle: {
-    fontSize: 32,
+    fontSize: 55,
+    fontFamily: "BMJUA",
   },
   receiptText: {
-    fontSize: 15,
+    fontSize: 18,
+    fontFamily: "BMJUA",
   },
   receiptFlatListView: {
     height: responsiveScreenHeight(30),
     width: responsiveScreenWidth(90),
     marginBottom: 50,
+  },
+  marginView: {
+    width: "100%",
+    marginTop: 5,
+    marginBottom: 10,
+  },
+  container: {
+    flex: 1,
+    marginTop: StatusBar.currentHeight || 0,
+  },
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalImage: {
+    width: 300,
+    height: 500,
+    resizeMode: "contain",
   },
 };
 
@@ -112,4 +145,53 @@ export const homeIconStyle = {
     marginRight: 20,
     marginTop: 20,
   },
+}
+
+export const RankingStyle = {
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 10,
+    marginTop: 10, 
+  },
+  button: {
+    backgroundColor: 'green',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  tableContainer: {
+    backgroundColor: '#c8e6c9',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginHorizontal: 15,
+  },
+  tableHeader: {
+    flexDirection: 'row',
+    backgroundColor: '#81c784', 
+    paddingVertical: 10,
+  },
+  columnHeader: {
+    flex: 1,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    color: 'white', 
+    fontSize: 18,
+  },
+  tableRow: {
+    flexDirection: 'row',
+    paddingVertical: 10,
+  },
+  column: {
+    flex: 1,
+    textAlign: 'center',
+    color: 'black',
+    paddingVertical: 5,
+  },
+  rowColors: ['#f0f8f6', '#e0f2e9'],
 }

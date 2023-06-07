@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import * as ImagePicker from 'expo-image-picker';
-import { Alert, Pressable, Text, Image } from 'react-native';
+import { Alert, Pressable, Text, Image, Button, View } from 'react-native';
 import Axios from 'axios';
 
 const Upload = () => {
@@ -68,7 +68,7 @@ const Upload = () => {
 
         //유저 토큰
         const receiptToken = {
-            Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODU5MzY0ODAsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwicHJvdmlkZXIiOiJMT0NBTCIsImV4cCI6MTY4NjAyMjg4MH0.hH0naKQyAZ3r0u_3RIUoV-1bwackFJb0bo6O7A6OFoBaCn61vRYS2MKCe9l9Hzyu`,
+            Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYwNzQ1MTEsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwicHJvdmlkZXIiOiJMT0NBTCIsImV4cCI6MTY4NjE2MDkxMX0.e0CDol3o60D99_ZwRYicTjc2KDtbi1sakc4S18SmhGk4l6k9pXqEusxs-N0FnfK-`,
         };
         
         const imageData = {
@@ -79,9 +79,7 @@ const Upload = () => {
         await Axios({
             method: "POST",
             url: 'https://www.smu-enip.site/receipt', 
-            headers: {
-                Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODU5MzY0ODAsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwicHJvdmlkZXIiOiJMT0NBTCIsImV4cCI6MTY4NjAyMjg4MH0.hH0naKQyAZ3r0u_3RIUoV-1bwackFJb0bo6O7A6OFoBaCn61vRYS2MKCe9l9Hzyu`,
-            },
+            headers: receiptToken,
             data:imageData,
 
         })
@@ -100,14 +98,16 @@ const Upload = () => {
     };
 
     return(
-        <Pressable onPress = { uploadImage }>
-            <Text>
-                이미지 업로드하기
-            </Text>
+        <View>
+            <Button
+                title = "이미지 업로드하기"
+                color = '#009966'
+                onPress = { uploadImage }
+            ></Button>
             <Image
                 source = {{ uri: imageUrl }}
             ></Image>
-        </Pressable>
+        </View>
     );
 }
 
