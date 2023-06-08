@@ -34,7 +34,7 @@ function Home(props){
                 height: 50,
                 marginBottom: 20,
               }}
-              source={ require('C:/Project/Mobile/SMU-Enip/assets/ReceiptScan.png') }
+              source={ require('C:/Users/sunny/LastProjectEver/frontend/assets/ReceiptScan.png') }
             ></Image>
             <Text
               style = { homeIconStyle.iconTextStyle }
@@ -51,7 +51,7 @@ function Home(props){
                 height: 50,
                 marginBottom: 20,
               }}
-              source={ require('C:/Project/Mobile/SMU-Enip/assets/Ranking.png') }
+              source={ require('C:/Users/sunny/LastProjectEver/frontend/assets/Ranking.png') }
             ></Image>
             <Text
               style = { homeIconStyle.iconTextStyle }

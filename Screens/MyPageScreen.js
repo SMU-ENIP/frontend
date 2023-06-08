@@ -1,51 +1,46 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, TextInput, TouchableOpacity, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import UserContext from '../context/UserContext';
 
 function MyPageScreen() {
+  const { user } = useContext(UserContext);
   const [name, setName] = useState('');
   const [profileImage, setProfileImage] = useState(null);
-  const [savedProfile, setSavedProfile] = useState({});
   const [isInputFocused, setInputFocused] = useState(false);
-  //const {user,setUser} = useContext(UserContext)
-  
+
   const handleNameChange = (text) => {
     setName(text);
   };
 
   const handleProfileSave = () => {
-    const profile = {
-      name: name,
-      profileImage: profileImage,
-    };
-    setSavedProfile(profile);
-    console.log('프로필 저장:', profile);
-    setName("");
+    // Save profile logic
   };
 
   const handleChooseProfileImage = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (permissionResult.granted === false) {
-      alert('갤러리 접근 권한이 필요합니다.');
+      // Permission to access the media library was denied
       return;
     }
 
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    const imageResult = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
     });
 
-    if (!pickerResult.cancelled) {
-      setProfileImage(pickerResult.uri);
+    if (!imageResult.cancelled) {
+      setProfileImage(imageResult.uri);
     }
   };
-  
+
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5F5F5', padding: 20 }}>
+      {/* Profile image section */}
       <TouchableOpacity onPress={handleChooseProfileImage} style={{ marginBottom: 20 }}>
+        {/* Profile image or placeholder */}
         {profileImage ? (
           <Image source={{ uri: profileImage }} style={{ width: 150, height: 150, borderRadius: 80 }} />
         ) : (
@@ -55,15 +50,13 @@ function MyPageScreen() {
         )}
       </TouchableOpacity>
 
+      {/* Profile information */}
       <View style={{ alignItems: 'center', marginBottom: 10 }}>
-        {savedProfile && (
-          <>
-            <Text style={{ fontSize: 25, fontWeight: 'bold',fontFamily: "BMJUA" }}>프로필 정보</Text>
-            <Text style={{ fontSize: 16, marginTop: 20, fontFamily: "BMJUA" }}>이름: {savedProfile.name}</Text>
-          </>
-        )}
+        <Text style={{ fontSize: 25, fontWeight: 'bold', fontFamily: "BMJUA" }}>프로필 정보</Text>
+        <Text style={{ fontSize: 16, marginTop: 20, fontFamily: "BMJUA" }}>이름: {user && user.nickname}</Text>
       </View>
 
+      {/* Input field and save button */}
       <View style={{ alignItems: 'center', marginTop: 20 }}>
         <TextInput
           style={{

@@ -36,7 +36,7 @@ const LoginScreen = (props) => {
           props.navigation.navigate('Admin');
         } else {
           // Navigate to MainScreen
-          props.navigation.navigate('Main');
+          props.navigation.navigate('Main', { userName: responseData.name });
         }
       } else {
         console.log('로그인 실패');
