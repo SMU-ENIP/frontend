@@ -5,42 +5,41 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   Image,
   View,
-  Button
 } from 'react-native';
 import Axios from 'axios';
+import UserContext from '../../context/UserContext';
 
 const Complete = (props) => {
 
   //영수증 내용 리스트
   const [renderList,setRenderList] = useState([]);
 
+  const {user, setUser} = React.useContext(UserContext)
+
   const receiptListToken = {
-    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYwOTU4NjUsInN1YiI6IjQ0IiwidXNlcklkIjoidGVzdDEyMzQiLCJlbWFpbCI6InRlc3QxMjM0QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJwcm92aWRlciI6IkxPQ0FMIiwiZXhwIjoxNjg2MTgyMjY1fQ.HC-pW1M7TxU3gUdN_2kIG1gxk_sK0w3ZE6k1TOEzWl2aG6ZlRY6qs-eR6t95VH-t`,
+    Authorization: `Bearer ${user ? user.token : 'Unknown'}`
   };
-
-
-  const fetchData = () =>{
-    Axios.get("https://www.smu-enip.site/recycle/image/list", {
-       headers: receiptListToken,
-       params: {
-        isApproved : true
-       },
-     }).then((res)=>{
-       
-       setRenderList(res.data)
-       console.log(renderList)
-       
-     }).catch((err)=>{
-       console.log(err)
-     })
-  }
 
   //서버에서 영수증 정보를 불러옴
   useEffect(() => {
-      fetchData();
+    const fetchData = async () => {
+      try {
+        const res = await Axios.get("https://www.smu-enip.site/recycle/image/list", {
+          headers: receiptListToken,
+          params: {
+            approved: false
+          },
+        });
+        setRenderList(res.data);
+        console.log(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    
+    fetchData();
   },[]);
 
   const Item = ({item}) => (
@@ -61,19 +60,24 @@ const Complete = (props) => {
 
         <View style={[styles.ButtonStyle]}>
           <View style={[styles.uploadButtonStyle]}>  
-            <Text style={[styles.infoTextStyle]}>검토중</Text>
+            <Text style={[styles.infoTextStyle]}>검토완료</Text>
           </View>
         </View>
       </View>
     </View>
   );
+  
+  const MemoizedItem = React.memo(Item);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={renderList}
-        renderItem={({ item, index }) => <Item item={item}  />}
+        renderItem={({ item, index }) => <MemoizedItem item={item}  />}
         keyExtractor={item => item.id.toString()}
+        initialNumToRender={10}
+        maxToRenderPerBatch={10}
+        windowSize={5}
       />
     </SafeAreaView>
   );

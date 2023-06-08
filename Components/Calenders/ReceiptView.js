@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import Axios from "axios";
 import { receiptStyle } from "../styles";
+import UserContext from "../../context/UserContext";
 
 const ReceiptView = (props) => {
   const [selectedId, setSelectedId] = useState();
@@ -25,9 +26,12 @@ const ReceiptView = (props) => {
   //영수증 내용 리스트
   const [renderList,setRenderList] = useState([]);
 
+  const {user, setUser} = React.useContext(UserContext)
+
   const receiptListToken = {
-    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYwMjUyMDMsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9VU0VSIiwicHJvdmlkZXIiOiJMT0NBTCIsImV4cCI6MTY4NjExMTYwM30.8ch4q4UezZQ_KPoAd62c3g30zEZsf8QPt77Rjz3RRTLPHTWjGI6Mt9l7jS77wkL5`,
+    Authorization: `Bearer ${user ? user.token : 'Unknown'}`
   };
+
   
   //서버에서 영수증 정보를 불러옴
   useEffect(() => { 

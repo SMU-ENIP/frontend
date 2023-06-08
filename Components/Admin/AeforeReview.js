@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Axios from 'axios';
+import UserContext from '../../context/UserContext';
 
 const AeforeReview = () => {
 
@@ -36,8 +37,10 @@ const AeforeReview = () => {
     setModalVisible(false);
   }
 
+  const {user, setUser} = React.useContext(UserContext)
+
   const receiptListToken = {
-    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYwOTUxODcsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsInByb3ZpZGVyIjoiTE9DQUwiLCJleHAiOjE2ODYxODE1ODd9.ArkPGGtGaPZAk3QR-vdWkY3_i4he6NOZ0gCT5Bu-l6J00D6GrZQ0jXofkSeUjn6D`,
+    Authorization: `Bearer ${user ? user.token : 'Unknown'}`
   };
 
   //업로드한 유저 영수증 목록 출력
@@ -50,15 +53,15 @@ const AeforeReview = () => {
       },
       }).then((res)=>{
         
-      setRenderList([...res.data])
-      console.log(res)
-      console.log(renderList)
-      
-      setfatchApproval(res.data.approved)
-      console.log(fatchApproval)
+        setRenderList([...res.data])
+        console.log(res)
+        console.log(renderList)
+        
+        setfatchApproval(res.data.approved)
+        console.log(fatchApproval)
       
       }).catch((err)=>{
-      console.log(err)
+       console.log(err)
       })
       
   }
@@ -96,16 +99,16 @@ const AeforeReview = () => {
 
         <View style={[styles.ButtonStyle]}>
             <TouchableOpacity
-                style={styles.infoButtonStyle}
-                onPress={() => onPress(setRenderImge(item.image))}
+              style={styles.infoButtonStyle}
+              onPress={() => onPress(setRenderImge(item.image))}
             >
                 <Text style = {[styles.infoTextStyle]}>확대</Text>
             </TouchableOpacity>
             
             <View
-                style = {{
-                    flexDirection: 'row'
-                  }}
+              style = {{
+                  flexDirection: 'row'
+                }}
             >
                 <View style={[styles.approvalStyle, getStatusStyle()]}>  
                     <Text style = {[styles.textStyle]}

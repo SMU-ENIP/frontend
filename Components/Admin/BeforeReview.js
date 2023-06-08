@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import Axios from 'axios';
+import UserContext from '../../context/UserContext';
 
 const BeforeReview = () => {
 
@@ -41,8 +42,10 @@ const BeforeReview = () => {
     requestData();
   }
 
+  const {user, setUser} = React.useContext(UserContext)
+
   const receiptListToken = {
-    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYwOTUxODcsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsInByb3ZpZGVyIjoiTE9DQUwiLCJleHAiOjE2ODYxODE1ODd9.ArkPGGtGaPZAk3QR-vdWkY3_i4he6NOZ0gCT5Bu-l6J00D6GrZQ0jXofkSeUjn6D`,
+    Authorization: `Bearer ${user ? user.token : 'Unknown'}`
   };
 
   //업로드한 유저 영수증 목록 출력

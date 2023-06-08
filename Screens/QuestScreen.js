@@ -1,5 +1,3 @@
-import { View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Complete from '../Components/Quest/Complete';
 import Incomplete from '../Components/Quest/Incomplete';

@@ -1,7 +1,5 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import CalendarView from '../Components/Calenders/CalendarView';
-import PopUp from '../Components/Calenders/PopUp';
 
 function AccountBookScreen() {
   return (

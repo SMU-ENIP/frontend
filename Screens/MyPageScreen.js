@@ -45,50 +45,52 @@ function MyPageScreen() {
   
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#F5F5F5', padding: 20 }}>
-  <TouchableOpacity onPress={handleChooseProfileImage} style={{ marginBottom: 20 }}>
-    {profileImage ? (
-      <Image source={{ uri: profileImage }} style={{ width: 150, height: 150, borderRadius: 80 }} />
-    ) : (
-      <View style={{ width: 150, height: 150, borderRadius: 80, backgroundColor: '#E0E0E0', justifyContent: 'center', alignItems: 'center' }}>
-        <Text style={{ color: '#AAAAAA', fontSize: 12 }}>프로필 사진</Text>
-      </View>
-    )}
-  </TouchableOpacity>
-  <View style={{ alignItems: 'center', marginBottom: 10 }}>
-    {savedProfile && (
-      <>
-        <Text style={{ fontSize: 25, fontWeight: 'bold',fontFamily: "BMJUA" }}>프로필 정보</Text>
-        <Text style={{ fontSize: 16, marginTop: 20, fontFamily: "BMJUA" }}>이름: {savedProfile.name}</Text>
-      </>
-    )}
-  </View>
-  <View style={{ alignItems: 'center', marginTop: 20 }}>
-    <TextInput
-      style={{
-        width: 200,
-        height: 40,
-        borderColor: '#CCCCCC',
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        color: isInputFocused ? '#000000' : '#bbbbbb',
-        marginBottom: 10
-      }}
-      onChangeText={handleNameChange}
-      value={name}
-      onFocus={() => setInputFocused(true)}
-      onBlur={() => setInputFocused(false)}
-      placeholder={isInputFocused ? '' : '이름을 입력하세요.'}
-    />
-    <TouchableOpacity
-      style={{ backgroundColor: '#14870c', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 5 }}
-      onPress={handleProfileSave}
-    >
-      <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>프로필 저장</Text>
-    </TouchableOpacity>
-  </View>
-</View>
+      <TouchableOpacity onPress={handleChooseProfileImage} style={{ marginBottom: 20 }}>
+        {profileImage ? (
+          <Image source={{ uri: profileImage }} style={{ width: 150, height: 150, borderRadius: 80 }} />
+        ) : (
+          <View style={{ width: 150, height: 150, borderRadius: 80, backgroundColor: '#E0E0E0', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={{ color: '#AAAAAA', fontSize: 12 }}>프로필 사진</Text>
+          </View>
+        )}
+      </TouchableOpacity>
 
+      <View style={{ alignItems: 'center', marginBottom: 10 }}>
+        {savedProfile && (
+          <>
+            <Text style={{ fontSize: 25, fontWeight: 'bold',fontFamily: "BMJUA" }}>프로필 정보</Text>
+            <Text style={{ fontSize: 16, marginTop: 20, fontFamily: "BMJUA" }}>이름: {savedProfile.name}</Text>
+          </>
+        )}
+      </View>
+
+      <View style={{ alignItems: 'center', marginTop: 20 }}>
+        <TextInput
+          style={{
+            width: 200,
+            height: 40,
+            borderColor: '#CCCCCC',
+            borderWidth: 1,
+            borderRadius: 5,
+            paddingHorizontal: 10,
+            color: isInputFocused ? '#000000' : '#bbbbbb',
+            marginBottom: 10
+          }}
+          onChangeText={handleNameChange}
+          value={name}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => setInputFocused(false)}
+          placeholder={isInputFocused ? '' : '이름을 입력하세요.'}
+        />
+        
+        <TouchableOpacity
+          style={{ backgroundColor: '#14870c', paddingVertical: 12, paddingHorizontal: 24, borderRadius: 5 }}
+          onPress={handleProfileSave}
+        >
+          <Text style={{ color: '#FFFFFF', fontWeight: 'bold' }}>프로필 저장</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 }
 

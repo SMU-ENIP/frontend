@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Axios from 'axios';
+import UserContext from '../../context/UserContext';
 
 const Incomplete = (props) => {
 
@@ -37,27 +38,27 @@ const Incomplete = (props) => {
     setModalVisible(false);
   }
 
+  const {user, setUser} = React.useContext(UserContext)
+
   const receiptListToken = {
-    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYxMDQ1MDYsInN1YiI6IjEiLCJ1c2VySWQiOiJhZG1pbiIsImVtYWlsIjoiYWRtaW5AZXhhbXBsZS5jb20iLCJyb2xlIjoiUk9MRV9BRE1JTiIsInByb3ZpZGVyIjoiTE9DQUwiLCJleHAiOjE2ODYxOTA5MDZ9.9xJS7xRxr5foIl6Vc91G6zhdxROiPWqaWNA3PmsTE25dcL_lUqA4BdOIKh3ejGmv`,
+    Authorization: `Bearer ${user ? user.token : 'Unknown'}`
   };
 
 
   const fetchData = () =>{
     Axios.get("https://www.smu-enip.site/item/list", {
        headers: receiptListToken,
-     }).then((res)=>{
-       
-       setRenderList([...res.data])
-       console.log(renderList)
-       
-     }).catch((err)=>{
-       console.log(err)
-     })
+    }).then((res)=>{
+      setRenderList(res.data)
+      console.log(renderList)
+    }).catch((err)=>{
+      console.log(err)
+    })
  }
 
   //서버에서 영수증 정보를 불러옴
   useEffect(() => {
-      fetchData();
+    fetchData();
   },[]);
 
 
@@ -70,65 +71,64 @@ const Incomplete = (props) => {
   //이미지 업로드 기능
   const uploadImage = async(itemId) => {
 
-      //이미지 업로드 권한확인
-      //권한이 없으면 물어본다, 승인 X => 함수 종료
-      if(!status?.granted){
-          const permission = await requestPermission();
+    //이미지 업로드 권한확인
+    //권한이 없으면 물어본다, 승인 X => 함수 종료
+    if(!status?.granted){
+      const permission = await requestPermission();
 
-          if(!permission.granted){
-              alert('갤러리 접근 권한이 필요합니다.');
-              return null;
-          }
+      if(!permission.granted){
+        alert('갤러리 접근 권한이 필요합니다.');
+        return null;
       }
+    }
 
-      //이미지 업로드 기능
-      const result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.Images,
-          allowsEditing: false,
-          quality: 1,
-          aspect: [1, 1]
+    //이미지 업로드 기능
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: false,
+      quality: 1,
+      aspect: [1, 1]
+    });
 
-      });
+    //이미지 업로드를 취소한 경우
+    if(result.canceled){
+      return null;
+    }
 
-      //이미지 업로드를 취소한 경우
-      if(result.canceled){
-          return null;
-      }
+    //이미지 업로드 결과 및 이미지 경로 업데이트
+    console.log(result);
+    setImageUrl(result.uri);
+    Alert.alert("이미지 업로드 완료 !");
 
-      //이미지 업로드 결과 및 이미지 경로 업데이트
-      console.log(result);
-      setImageUrl(result.uri);
-      Alert.alert("이미지 업로드 완료 !");
+    const localUri = result.uri;
+    const filename = localUri.split("/").pop();
+    const match = /\.(\w+)$/.exec(filename ?? "");
+    const type = match ? `image/${match[1]}` : `image`;
+    const formData = new FormData();
+    formData.append("image", { uri: localUri, name: filename, type });
+    
+    const imageData = {
+      image: localUri,
+      itemId: itemId
+    }
 
-      const localUri = result.uri;
-      const filename = localUri.split("/").pop();
-      const match = /\.(\w+)$/.exec(filename ?? "");
-      const type = match ? `image/${match[1]}` : `image`;
-      const formData = new FormData();
-      formData.append("image", { uri: localUri, name: filename, type });
-      
-      const imageData = {
-          image: localUri,
-          itemId: itemId
-      }
+    await Axios({
+      method: "POST",
+      url: 'https://www.smu-enip.site/recycle/image', 
+      headers: receiptListToken,
+      data:imageData,
 
-      await Axios({
-          method: "POST",
-          url: 'https://www.smu-enip.site/recycle/image', 
-          headers: receiptListToken,
-          data:imageData,
-
-      })
-      .then(function(response) {
-          console.log("");
-          console.log("RESPONSE : " + JSON.stringify(imageData));
-          console.log("");
-      })
-      .catch(function(error) {
-          console.log("");
-          console.log("ERROR : " + JSON.stringify(error));
-          console.log("");
-      });
+    })
+    .then(function(response) {
+      console.log("");
+      console.log("RESPONSE : " + JSON.stringify(imageData));
+      console.log("");
+    })
+    .catch(function(error) {
+      console.log("");
+      console.log("ERROR : " + JSON.stringify(error));
+      console.log("");
+    });
   }
 
   const Item = ({item, onPress}) => (

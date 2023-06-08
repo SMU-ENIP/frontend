@@ -5,12 +5,11 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TouchableOpacity,
   Image,
   View,
-  Button
 } from 'react-native';
 import Axios from 'axios';
+import UserContext from '../../context/UserContext';
 
 const Proceeding = (props) => {
 
@@ -18,22 +17,21 @@ const Proceeding = (props) => {
   //영수증 내용 리스트
   const [renderList,setRenderList] = useState([]);
 
-  const receiptListToken = {
-    Authorization: `Bearer eyJhbGciOiJIUzM4NCJ9.eyJpYXQiOjE2ODYwOTU4NjUsInN1YiI6IjQ0IiwidXNlcklkIjoidGVzdDEyMzQiLCJlbWFpbCI6InRlc3QxMjM0QGdtYWlsLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJwcm92aWRlciI6IkxPQ0FMIiwiZXhwIjoxNjg2MTgyMjY1fQ.HC-pW1M7TxU3gUdN_2kIG1gxk_sK0w3ZE6k1TOEzWl2aG6ZlRY6qs-eR6t95VH-t`,
-  };
+  const {user, setUser} = React.useContext(UserContext)
 
+  const receiptListToken = {
+    Authorization: `Bearer ${user ? user.token : 'Unknown'}`
+  };
 
   const fetchData = () =>{
     Axios.get("https://www.smu-enip.site/recycle/image/list", {
        headers: receiptListToken,
-     }).then((res)=>{
-       
-       setRenderList(...res.data)
-       console.log(renderList)
-       
-     }).catch((err)=>{
-       console.log(err)
-     })
+    }).then((res)=>{
+      setRenderList(res.data)
+      console.log(renderList)
+    }).catch((err)=>{
+      console.log(err)
+    })
   }
 
   //서버에서 영수증 정보를 불러옴
@@ -72,7 +70,7 @@ const Proceeding = (props) => {
       <FlatList
         data={renderList}
         renderItem={({ item, index }) => <Item item={item}/>}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
       />
     </SafeAreaView>
   );
