@@ -22,23 +22,19 @@ const Complete = (props) => {
     Authorization: `Bearer ${user ? user.token : 'Unknown'}`
   };
 
+  const fetchData = () =>{
+    Axios.get("https://www.smu-enip.site/item/list", {
+       headers: receiptListToken,
+    }).then((res)=>{
+      setRenderList(res.data)
+      console.log(renderList)
+    }).catch((err)=>{
+      console.log(err)
+    })
+ }
+
   //서버에서 영수증 정보를 불러옴
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await Axios.get("https://www.smu-enip.site/recycle/image/list", {
-          headers: receiptListToken,
-          params: {
-            approved: false
-          },
-        });
-        setRenderList(res.data);
-        console.log(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    
     fetchData();
   },[]);
 
@@ -50,12 +46,13 @@ const Complete = (props) => {
         }}
       >
         <View style={[styles.viewStyle]}>
-          <Image source={{ uri: item.image }} style={[ styles.imageStyle ]} />
+          <Image source={{ uri: item.categoryImage }} style={[ styles.imageStyle ]} />
         </View>
 
         <View style={[styles.viewStyle]}>
           <Text style={[styles.dateTextStyle]}>{item.date}</Text>
-          <Text style={[styles.recycleTextStyle]}>{item.userId}</Text>
+          <Text style={[styles.recycleTextStyle]}>{item.name}</Text>
+          <Text style={[styles.recycleTextStyle]}>{item.trashAmount}</Text>
         </View>
 
         <View style={[styles.ButtonStyle]}>
@@ -66,14 +63,12 @@ const Complete = (props) => {
       </View>
     </View>
   );
-  
-  const MemoizedItem = React.memo(Item);
 
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
         data={renderList}
-        renderItem={({ item, index }) => <MemoizedItem item={item}  />}
+        renderItem={Item}
         keyExtractor={item => item.id.toString()}
         initialNumToRender={10}
         maxToRenderPerBatch={10}

@@ -24,7 +24,7 @@ const Proceeding = (props) => {
   };
 
   const fetchData = () =>{
-    Axios.get("https://www.smu-enip.site/recycle/image/list", {
+    Axios.get("https://www.smu-enip.site/item/list", {
        headers: receiptListToken,
     }).then((res)=>{
       setRenderList(res.data)
@@ -32,11 +32,11 @@ const Proceeding = (props) => {
     }).catch((err)=>{
       console.log(err)
     })
-  }
+ }
 
   //서버에서 영수증 정보를 불러옴
   useEffect(() => {
-      fetchData();
+    fetchData();
   },[]);
 
   const Item = ({item}) => (
@@ -47,12 +47,13 @@ const Proceeding = (props) => {
         }}
       >
         <View style={[styles.viewStyle]}>
-          <Image source={{ uri: item.image }} style={[ styles.imageStyle ]} />
+          <Image source={{ uri: item.categoryImage }} style={[ styles.imageStyle ]} />
         </View>
 
         <View style={[styles.viewStyle]}>
           <Text style={[styles.dateTextStyle]}>{item.date}</Text>
-          <Text style={[styles.recycleTextStyle]}>{item.userId}</Text>
+          <Text style={[styles.recycleTextStyle]}>{item.name}</Text>
+          <Text style={[styles.trashAmountTextStyle]}>{item.trashAmount}</Text>
         </View>
 
         <View style={[styles.ButtonStyle]}>
@@ -125,6 +126,11 @@ const styles = StyleSheet.create({
   },
   infoTextStyle: {
     color: 'white',
+    fontWeight: 'bold',
+  },
+  trashAmountTextStyle:{
+    fontSize: 12,
+    fontWeight: 'bold'
   },
   uploadButtonStyle: {
     borderColor: 'black',
